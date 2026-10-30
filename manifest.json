@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "BBB Class Recorder",
+  "version": "2.0.0",
+  "description": "Click the icon to record the current tab (video + sound) and its chat. Click again to stop and save.",
+  "minimum_chrome_version": "116",
+  "permissions": ["tabCapture", "offscreen", "downloads", "scripting", "activeTab", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Start recording this tab"
+  }
+}

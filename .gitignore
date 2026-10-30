@@ -1,0 +1,6 @@
+*.webm
+*.mkv
+*.mp4
+*.srt
+.DS_Store
+Thumbs.db
