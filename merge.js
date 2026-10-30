@@ -8,9 +8,10 @@
 //   writable  - WritableStream that accepts {type:"write", data, position} chunks
 //               (e.g. a FileSystemWritableFileStream)
 //   onProgress(fraction 0..1)
+//   signal    - optional AbortSignal; aborting stops the merge with an AbortError
 //
 // Returns the file extension of the result ("webm", "mp4" or "mkv").
-export async function mergeVideoAndAudio({ mb, videoSrc, audioSrc, writable, onProgress = () => {} }) {
+export async function mergeVideoAndAudio({ mb, videoSrc, audioSrc, writable, onProgress = () => {}, signal }) {
   const videoInput = new mb.Input({ source: videoSrc, formats: mb.ALL_FORMATS });
   const audioInput = new mb.Input({ source: audioSrc, formats: mb.ALL_FORMATS });
 
@@ -54,6 +55,7 @@ export async function mergeVideoAndAudio({ mb, videoSrc, audioSrc, writable, onP
     let lastReported = 0;
 
     while (!v.done || !a.done) {
+      signal?.throwIfAborted();
       if (!v.done && (a.done || v.value.timestamp <= a.value.timestamp)) {
         await vSource.add(v.value, vFirst ? { decoderConfig: vConfig } : undefined);
         vFirst = false;

@@ -107,6 +107,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (msg.url) await download(msg.url, `${safeName(msg.title)}.${msg.url.split(".").pop()}`);
       setBadge("", "Start recording this tab");
     });
+  } else if (msg.type === "playback-cancelled") {
+    setBadge("", "Start recording this tab");
   } else if (msg.type === "playback-error") {
     setBadge("ERR", msg.error);
   } else if (msg.type === "recording-saved") {
