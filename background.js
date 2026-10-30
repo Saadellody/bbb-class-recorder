@@ -119,18 +119,18 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
       rec.chat.push({ t: Math.max(0, (Date.now() - rec.startedAt) / 1000), name: msg.name, text: msg.text });
       await setState(rec);
     });
+  } else if (msg.type === "progress") {
+    setBadge(`${Math.round(msg.p * 100)}%`, "Joining video and sound…");
   } else if (msg.type === "playback-files") {
+    // Saved next to the video with the same name, so players load the chat subtitles automatically
     queue(async () => {
-      const folder = `BBB/${safeName(msg.title)}`;
-      for (const url of msg.files) await download(url, `${folder}/${url.split("/").pop()}`);
+      const name = safeName(msg.title);
+      if (msg.url) await download(msg.url, `${name}.${msg.url.split(".").pop()}`);
       if (msg.chat.length) {
-        await downloadText(chatToSrt(msg.chat), `${folder}/chat.srt`);
-        await downloadText(chatToTxt(msg.chat), `${folder}/chat.txt`);
+        await downloadText(chatToSrt(msg.chat), `${name}.srt`);
+        await downloadText(chatToTxt(msg.chat), `${name} - chat.txt`);
       }
-      setBadge(
-        msg.files.length ? "" : "ERR",
-        msg.files.length ? "Start recording this tab" : "No video files found for this séance"
-      );
+      setBadge("", "Start recording this tab");
     });
   } else if (msg.type === "playback-error") {
     setBadge("ERR", msg.error);

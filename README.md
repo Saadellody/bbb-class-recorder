@@ -12,9 +12,11 @@ One click on the extension icon saves the séance you are watching, with its cha
 ## Download a séance that is already saved
 
 1. Log in, open the course's BigBlueButton page and click **Lecture** on the séance you want.
-2. When the player opens, click the extension icon.
-3. The files go to `Downloads\BBB\<date> <séance name>\`. It downloads the original files,
-   so it takes about as long as a normal download, not the length of the class.
+2. When the player opens, click the extension icon and **keep the tab open** while the badge
+   counts up to 100%.
+3. You get **one video file** (screen share + class sound) in `Downloads`, named
+   `<date> <séance name>.webm`. It joins the original files without re-encoding, so it takes
+   about as long as a normal download, not the length of the class.
 
 ## Record a live class
 
@@ -27,18 +29,27 @@ One click on the extension icon saves the séance you are watching, with its cha
 
 | File | Content |
 |---|---|
-| `webcams.webm` / `video.webm` | Class audio + video |
-| `deskshare.webm` | Teacher's screen share (saved séances only) |
-| `chat.txt` | Chat with timestamps |
-| `chat.srt` | Chat as subtitles |
+| `<name>.webm` (saved séance) or `video.webm` (live) | Video + class sound in one file |
+| `<name>.srt` / `chat.srt` | Chat as subtitles. VLC shows them automatically for the saved séance |
+| `<name> - chat.txt` / `chat.txt` | Chat with timestamps |
 
-## Make one video with the chat inside (optional)
+If the teacher used slides and no screen share, the video shows the webcam (or a blank
+picture if the webcam was off). The sound is always complete.
+
+## Live recordings: fix seeking (optional)
+
+Browser recordings sometimes can't be fast-forwarded. To fix that and put the chat inside:
 
 1. Install ffmpeg once: `winget install Gyan.FFmpeg`, then reopen the terminal.
 2. Run `powershell -ExecutionPolicy Bypass -File merge.ps1`
 
-Each folder gets a `.mkv` with the video, the sound and the chat as a subtitle track (turn
-subtitles on in VLC). It also fixes seeking in live recordings.
+Each folder in `Downloads\BBB` gets a `.mkv` with the video, the sound and the chat as a
+subtitle track.
+
+## Credits
+
+Joins video and sound with [Mediabunny](https://github.com/Vanilagy/mediabunny)
+(MPL-2.0, see `vendor/mediabunny-LICENSE.txt`).
 
 ## If something goes wrong
 
